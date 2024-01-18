@@ -1,0 +1,38 @@
+{
+    "name": "ampeco/omnipay-otpgroup",
+    "type": "library",
+    "version": "1.0.0",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Ampeco\\OmnipayOtpgroup\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Alexander Alexiev",
+            "email": "alexander.alexiev@ampeco.com"
+        },
+        {
+            "name": "Ivan Mirchev",
+            "email": "ivan.mirchev@ampeco.com"
+        },
+        {
+            "name": "Valentin Damyanov",
+            "email": "valentin.damyanov@ampeco.global"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "ext-openssl": "*",
+        "omnipay/common": "^3.2",
+        "php-http/httplug": "^1.0|^2.0",
+        "symfony/http-client": "^6.2",
+        "nyholm/psr7": "^1.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}
