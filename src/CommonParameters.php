@@ -75,7 +75,7 @@ trait CommonParameters
         return $this->getParameter('username');
     }
 
-    public function setPassword($value)
+    public function setPassword($value): void
     {
         $this->setParameter('password', $value);
     }
@@ -85,7 +85,7 @@ trait CommonParameters
         return $this->getParameter('password');
     }
 
-    public function setLanguage($value)
+    public function setLanguage($value): void
     {
         $this->setParameter('language', $value);
     }
@@ -93,5 +93,15 @@ trait CommonParameters
     public function getLanguage()
     {
         return $this->getparameter('language');
+    }
+
+    public function getBaseUrl()
+    {
+        return $this->getParameter('baseUrl');
+    }
+
+    public function setBaseUrl($value): void
+    {
+        $this->setParameter('baseUrl', $value);
     }
 }

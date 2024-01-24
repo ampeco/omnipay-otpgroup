@@ -2,22 +2,21 @@
 
 namespace Ampeco\OmnipayOtpGroup;
 
-use Ampeco\OmnipayOtpGroup\Messages\CaptureRequest;
-use Ampeco\OmnipayOtpGroup\Messages\CompleteOrderRequest;
-use Ampeco\OmnipayOtpGroup\Messages\CreateAuthorizeRequest;
-use Ampeco\OmnipayOtpGroup\Messages\CreateAuthorizeResponse;
-use Ampeco\OmnipayOtpGroup\Messages\CreateCardRequest;
-use Ampeco\OmnipayOtpGroup\Messages\CreatePurchaseRequest;
-use Ampeco\OmnipayOtpGroup\Messages\CreatePurchaseResponse;
-use Ampeco\OmnipayOtpGroup\Messages\DeleteCardRequest;
-use Ampeco\OmnipayOtpGroup\Messages\ReverseRequest;
-use Ampeco\OmnipayOtpGroup\Messages\TransactionResultRequest;
+use Ampeco\OmnipayOtpGroup\Message\CaptureRequest;
+use Ampeco\OmnipayOtpGroup\Message\CompleteOrderRequest;
+use Ampeco\OmnipayOtpGroup\Message\AuthorizeRequest;
+use Ampeco\OmnipayOtpGroup\Message\AuthorizeResponse;
+use Ampeco\OmnipayOtpGroup\Message\CreateCardRequest;
+use Ampeco\OmnipayOtpGroup\Message\PurchaseRequest;
+use Ampeco\OmnipayOtpGroup\Message\PurchaseResponse;
+use Ampeco\OmnipayOtpGroup\Message\DeleteCardRequest;
+use Ampeco\OmnipayOtpGroup\Message\ReverseRequest;
+use Ampeco\OmnipayOtpGroup\Message\TransactionResultRequest;
 use Omnipay\Common\AbstractGateway;
 use Omnipay\Common\Message\RequestInterface;
 
 class Gateway extends AbstractGateway
 {
-
     use CommonParameters;
 
     /**
@@ -43,37 +42,19 @@ class Gateway extends AbstractGateway
         return $this->createRequest(ReverseRequest::class, $options);
     }
 
-    public function deleteCard(array $options = array()): RequestInterface
+    public function deleteCard(array $options = []): RequestInterface
     {
         return $this->createRequest(DeleteCardRequest::class, $options);
     }
 
-    public function purchase(array $options = array()): RequestInterface|false
+    public function purchase(array $options = []): ?RequestInterface
     {
-        /** @var CreatePurchaseResponse $response */
-        $response = $this->createRequest(CreatePurchaseRequest::class, $options)->send(); //register payment
-
-        if($response->isSuccessful()) {
-            return $this->createRequest(CompleteOrderRequest::class, [ //confirm payment
-                'orderId' => $response->getOrderId(),
-                'bindingId' => $options['bindingId'],
-                'language' => $options['language'],
-            ]);
-        }
-        return false;
+        return $this->createRequest(PurchaseRequest::class, $options);
     }
-    public function authorize(array $options = array()): RequestInterface
+
+    public function authorize(array $options = []): ?RequestInterface
     {
-        /** @var CreateAuthorizeResponse $response */
-        $response = $this->createRequest(CreateAuthorizeRequest::class, $options)->send();
-        if($response->isSuccessful()) {
-            return $this->createRequest(CompleteOrderRequest::class, [ //confirm payment
-                'orderId' => $response->getOrderId(),
-                'bindingId' => $options['bindingId'],
-                'language' => $options['language'],
-            ]);
-        }
-        return false;
+        return $this->createRequest(AuthorizeRequest::class, $options);
     }
 
     public function capture(array $options = [])
@@ -86,29 +67,37 @@ class Gateway extends AbstractGateway
         return parent::createRequest($class, $parameters)->setGateway($this);
     }
 
+    public function completeOrder(array $options = [])
+    {
+        return $this->createRequest(CompleteOrderRequest::class, $options);
+    }
+
     public function signHeaders(string $body)
     {
         if ($signSettings = $this->signSettings()) {
             [$privateKey, $password] = $signSettings;
             $hash = hash('sha256', $body, true);
             $signature = $this->createSignature($privateKey, $password, $hash);
+
             return [
                 'X-Hash' => base64_encode($hash),
                 'X-Signature' => base64_encode($signature),
             ];
         }
+
         return [];
     }
 
     private function signSettings()
     {
-        if($this->getUseSignature()){
+        if ($this->getUseSignature()) {
             $privateKey = $this->getPrivateKey();
             $password = $this->getPrivateKeyPassword();
             if ($privateKey && $password) {
                 return [$privateKey, $password];
             }
         }
+
         return null;
     }
 
@@ -116,6 +105,7 @@ class Gateway extends AbstractGateway
     {
         $pKey = openssl_pkey_get_private($privateKey, $password);
         openssl_sign($hash, $signature, $pKey, OPENSSL_ALGO_SHA256);
+
         return $signature;
     }
 
@@ -147,5 +137,15 @@ class Gateway extends AbstractGateway
     public function getPrivateKeyPassword()
     {
         return $this->getParameter('private_key_password');
+    }
+
+    public function getCreateCardCurrency()
+    {
+        return $this->getParameter('createCardCurrency');
+    }
+
+    public function getCreateCardAmount(): int
+    {
+        return 1;
     }
 }

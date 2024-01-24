@@ -5,7 +5,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Ampeco\\OmnipayOtpgroup\\": "src/"
+            "Ampeco\\OmnipayOtpGroup\\": "src/"
         }
     },
     "authors": [
