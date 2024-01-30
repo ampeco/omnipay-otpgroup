@@ -5,11 +5,10 @@ namespace Ampeco\OmnipayOtpGroup;
 use Ampeco\OmnipayOtpGroup\Message\CaptureRequest;
 use Ampeco\OmnipayOtpGroup\Message\CompleteOrderRequest;
 use Ampeco\OmnipayOtpGroup\Message\AuthorizeRequest;
-use Ampeco\OmnipayOtpGroup\Message\AuthorizeResponse;
 use Ampeco\OmnipayOtpGroup\Message\CreateCardRequest;
 use Ampeco\OmnipayOtpGroup\Message\PurchaseRequest;
-use Ampeco\OmnipayOtpGroup\Message\PurchaseResponse;
 use Ampeco\OmnipayOtpGroup\Message\DeleteCardRequest;
+use Ampeco\OmnipayOtpGroup\Message\RefundRequest;
 use Ampeco\OmnipayOtpGroup\Message\ReverseRequest;
 use Ampeco\OmnipayOtpGroup\Message\TransactionResultRequest;
 use Omnipay\Common\AbstractGateway;
@@ -40,6 +39,11 @@ class Gateway extends AbstractGateway
     public function void(array $options = [])
     {
         return $this->createRequest(ReverseRequest::class, $options);
+    }
+    
+    public function refund(array $options = [])
+    {
+        return $this->createRequest(RefundRequest::class, $options);
     }
 
     public function deleteCard(array $options = []): RequestInterface
