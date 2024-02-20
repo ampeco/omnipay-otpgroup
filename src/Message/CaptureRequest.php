@@ -36,10 +36,10 @@ class CaptureRequest extends AbstractRequest
      *
      * @param array $data The response data.
      * @param int $statusCode The status code of the response.
-     * @return Response The created response object.
+     * @return CaptureResponse The created response object.
      */
-    protected function createResponse(array $data, int $statusCode): Response
+    protected function createResponse(array $data, int $statusCode): CaptureResponse
     {
-        return new Response($this, $data, $statusCode);
+        return new CaptureResponse($this, $data, $statusCode);
     }
 }

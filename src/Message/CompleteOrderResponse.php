@@ -54,7 +54,14 @@ class CompleteOrderResponse extends Response implements RedirectResponseInterfac
 
     public function getTransactionReference()
     {
-        // orderId is not part of the response so it should be passed by data param in constructor
+        // orderId is not part of the response, so it should be passed by data param in constructor
         return $this->data['orderId'];
+    }
+
+    public function isSuccessful(): bool
+    {
+        return parent::isSuccessful()
+            && !array_key_exists('errorTypeName', $this->data)
+            && !array_key_exists('displayErrorMessage', $this->data);
     }
 }
