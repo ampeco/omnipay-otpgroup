@@ -11,7 +11,7 @@ class CreateCardRequest extends AbstractRequest
      */
     public function getEndpoint(): string
     {
-        return '/rest/register.do';
+        return '/rest/registerPreAuth.do';
     }
 
     /**
