@@ -11,6 +11,7 @@ use Ampeco\OmnipayOtpGroup\Message\DeleteCardRequest;
 use Ampeco\OmnipayOtpGroup\Message\RefundRequest;
 use Ampeco\OmnipayOtpGroup\Message\ReverseRequest;
 use Ampeco\OmnipayOtpGroup\Message\TransactionResultRequest;
+use Ampeco\OmnipayOtpGroup\Message\VerifyCardRequest;
 use Omnipay\Common\AbstractGateway;
 use Omnipay\Common\Message\RequestInterface;
 
@@ -34,6 +35,11 @@ class Gateway extends AbstractGateway
     public function fetchTransaction(array $options = []): RequestInterface
     {
         return $this->createRequest(TransactionResultRequest::class, $options);
+    }
+
+    public function verifyCard(array $options = []): RequestInterface
+    {
+        return $this->createRequest(VerifyCardRequest::class, $options);
     }
 
     public function void(array $options = [])
@@ -141,15 +147,5 @@ class Gateway extends AbstractGateway
     public function getPrivateKeyPassword()
     {
         return $this->getParameter('private_key_password');
-    }
-
-    public function getCreateCardCurrency()
-    {
-        return $this->getParameter('createCardCurrency');
-    }
-
-    public function getCreateCardAmount(): int
-    {
-        return 1;
     }
 }

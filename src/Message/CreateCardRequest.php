@@ -2,21 +2,13 @@
 
 namespace Ampeco\OmnipayOtpGroup\Message;
 
-
 class CreateCardRequest extends AbstractRequest
 {
-
-    /**
-     * @return mixed
-     */
     public function getEndpoint(): string
     {
         return '/rest/registerPreAuth.do';
     }
 
-    /**
-     * @return mixed
-     */
     public function getData(): array
     {
         return array_merge(parent::getData(), [
@@ -30,9 +22,6 @@ class CreateCardRequest extends AbstractRequest
         ]);
     }
 
-    /**
-     * @throws \JsonException
-     */
     protected function createResponse(array $data, int $statusCode): Response
     {
         return new CreateCardResponse($this, $data, $statusCode);
