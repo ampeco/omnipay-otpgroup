@@ -2,14 +2,25 @@
 
 namespace Ampeco\OmnipayOtpGroup\Message;
 
-class PurchaseRequest extends CreateCardRequest
+class PurchaseRequest extends AbstractRequest
 {
+    public function getEndpoint(): string
+    {
+        return '/rest/register.do';
+    }
 
     public function getData(): array
     {
-        $data = parent::getData();
-        $data['bindingId'] = $this->getBindingId();
-        return $data;
+        return array_merge(parent::getData(), [
+            'orderNumber' => $this->getOrderNumber(),
+            'amount' => $this->getAmountInteger(),
+            'currency' => $this->getCurrencyNumeric(),
+            'returnUrl' => $this->getReturnUrl(),
+            'description' => $this->getDescription(),
+            'language' => $this->getLanguage(),
+            'clientId' => $this->getClientId(),
+            'bindingId' => $this->getBindingId(),
+        ]);
     }
 
     /**
