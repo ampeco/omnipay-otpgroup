@@ -20,7 +20,6 @@ class CompleteOrderRequest extends AbstractRequest
             //TODO: Look at https://uat.dskbank.bg/sandbox/integration/api/rest/rest.html#payment-for-order for possible "tii" values
             //probably will be changed when 3DS(SCA) is need to be implemented
             'tii' => 'U', // penalty mode - no CVV|CVC, no 3DS
-            'clientId' => $this->getClientId(),
         ]);
     }
 

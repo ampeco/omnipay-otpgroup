@@ -4,16 +4,6 @@ namespace Ampeco\OmnipayOtpGroup\Message;
 
 class CaptureRequest extends AbstractRequest
 {
-    public function setDepositType(int $depositType): void
-    {
-        $this->setParameter('depositType', $depositType);
-    }
-
-    public function getDepositType(): int
-    {
-        return $this->getParameter('depositType');
-    }
-
     /**
      * @return string
      */
@@ -24,10 +14,12 @@ class CaptureRequest extends AbstractRequest
 
     public function getData(): array
     {
-        return array_merge(parent::getData(), [
+        $data = parent::getData();
+        unset($data['language']);
+
+        return array_merge($data, [
             'orderId' => $this->getOrderId(),
             'amount' => $this->getAmountInteger(),
-            'depositType' => $this->getDepositType(),
         ]);
     }
 
