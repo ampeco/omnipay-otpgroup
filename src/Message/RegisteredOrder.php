@@ -16,16 +16,16 @@ trait RegisteredOrder
 
     public function getRedirectUrl()
     {
-        return $this->data['formUrl'];
+        return $this->data['formUrl'] ?? null;
     }
 
     public function getTransactionReference()
     {
-        return $this->data['orderId'];
+        return $this->data['orderId'] ?? null;
     }
 
     public function getOrderId()
     {
-        return $this->data['orderId'];
+        return $this->data['orderId'] ?? null;
     }
 }

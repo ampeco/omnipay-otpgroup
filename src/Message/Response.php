@@ -55,6 +55,6 @@ class Response extends AbstractResponse
 
     public function getOrderId()
     {
-        return $this->data['orderId'];
+        return $this->data['orderId'] ?? null;
     }
 }

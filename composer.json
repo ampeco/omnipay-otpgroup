@@ -1,5 +1,6 @@
 {
     "name": "ampeco/omnipay-otpgroup",
+    "version": "1.0.9",
     "type": "library",
     "license": "MIT",
     "autoload": {
